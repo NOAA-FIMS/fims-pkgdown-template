@@ -1,10 +1,8 @@
 Package: fimsPkgdownTemplate
-Title: Pkgdown Site
+Title: FIMS Pkgdown Template
 Version: 0.0.0.9000
-Authors@R: c(
-  person("NOAA", "FIMS", role = c("cph"))
- )
-Description: Template repository configured to build a pkgdown site.
+Authors@R: person(c("Elizabeth", "F."), "Perl", "elizabeth.perl@noaa.gov", role = c("aut", "cre"))
+Description: Template repository configured to build a FIMS-themed pkgdown site.
 License: CC0 1.0 Universal
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
