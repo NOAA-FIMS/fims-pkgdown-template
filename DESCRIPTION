@@ -3,7 +3,7 @@ Title: Pkgdown Site
 Version: 0.0.0.9000
 Authors@R: c(
   person("NOAA", "FIMS", role = c("cph"))
-)
+ )
 Description: Template repository configured to build a pkgdown site.
 License: CC0 1.0 Universal
 Encoding: UTF-8
