@@ -1,12 +1,11 @@
 # fims-pkgdown-template
 
-A GitHub Template Repository providing shared [pkgdown](https://pkgdown.r-lib.org/) theme assets for NOAA-FIMS R packages.
+A GitHub Template Repository providing shared [pkgdown](https://pkgdown.r-lib.org/) theme files for NOAA-FIMS R packages.
 
 ## What this template provides
 
 - **`pkgdown/extra.css`** — shared NOAA-FIMS CSS stylesheet (fonts, colours, navbar, footer)
 - **`pkgdown/favicon/`** — FIMS favicon set (`.ico`, `.svg`, `.png`, web-app manifests)
-- **`pkgdown/assets/`** — shared static assets (cheatsheet PDF and thumbnail)
 - **`pkgdown/FIMS_PKGDOWN_TEMPLATE_VERSION`** — version marker used by the sync workflow
 - **`.github/workflows/sync-fims-pkgdown-template.yml`** — workflow to keep the above files up to date in downstream packages (see [Sync workflow](#sync-workflow) below)
 - **`pkgdown/_pkgdown.yml.example`** — starter config you can copy and customise
@@ -16,7 +15,7 @@ A GitHub Template Repository providing shared [pkgdown](https://pkgdown.r-lib.or
 Each downstream package is responsible for:
 
 - **`pkgdown/_pkgdown.yml`** — site URL, navbar structure, reference index, article list, authors block, etc. The sync workflow will **never** overwrite this file.
-- Any package-specific assets or vignettes.
+- Any package-specific files and vignettes.
 
 Use `pkgdown/_pkgdown.yml.example` in this repo as a starting point.
 
@@ -29,14 +28,14 @@ Use `pkgdown/_pkgdown.yml.example` in this repo as a starting point.
 2. Copy `pkgdown/_pkgdown.yml.example` to `pkgdown/_pkgdown.yml` and customise it for your package.
 3. Delete `pkgdown/_pkgdown.yml.example` if you no longer need it.
 
-### Option B — Add assets to an existing package manually
+### Option B — Add pkgdown files to an existing package manually
 
 Run the following from the root of your package repository:
 
 ```bash
 TEMPLATE_REPO="https://raw.githubusercontent.com/NOAA-FIMS/fims-pkgdown-template/main"
 
-mkdir -p pkgdown/favicon pkgdown/assets
+mkdir -p pkgdown/favicon
 
 # CSS
 curl -sSL "${TEMPLATE_REPO}/pkgdown/extra.css" -o pkgdown/extra.css
@@ -45,11 +44,6 @@ curl -sSL "${TEMPLATE_REPO}/pkgdown/extra.css" -o pkgdown/extra.css
 for f in apple-touch-icon.png favicon-96x96.png favicon.ico favicon.svg \
           site.webmanifest web-app-manifest-192x192.png web-app-manifest-512x512.png; do
   curl -sSL "${TEMPLATE_REPO}/pkgdown/favicon/${f}" -o "pkgdown/favicon/${f}"
-done
-
-# Assets
-for f in fims-cheatsheet-thumb.png fims-cheatsheet.pdf; do
-  curl -sSL "${TEMPLATE_REPO}/pkgdown/assets/${f}" -o "pkgdown/assets/${f}"
 done
 
 # Version marker
@@ -84,22 +78,14 @@ This workflow is intended to run in **downstream repos**, not in the template re
 3. Copies/updates only the template-managed files:
    - `pkgdown/extra.css`
    - `pkgdown/favicon/**`
-   - `pkgdown/assets/**`
    - `pkgdown/FIMS_PKGDOWN_TEMPLATE_VERSION`
 4. **Does not touch** `pkgdown/_pkgdown.yml`.
 5. If there are changes, opens a Pull Request to the default branch with a clear title and description.
-6. If there are no changes, exits silently (idempotent).
+6. If there are no changes, exits silently.
 
 ### Required permissions and secrets
 
 The workflow requests `contents: write` and `pull-requests: write` via the `permissions` block, which is satisfied by the automatic `GITHUB_TOKEN` in most repositories.
-
-If your GitHub organisation restricts cross-repository access via `GITHUB_TOKEN`, you will need to:
-
-1. Create a [Personal Access Token (PAT)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) with `repo` scope.
-2. Store it as a repository (or organisation) secret named **`FIMS_TEMPLATE_SYNC_TOKEN`**.
-
-The workflow automatically uses `FIMS_TEMPLATE_SYNC_TOKEN` when present, and falls back to `GITHUB_TOKEN` otherwise.
 
 ### Files the workflow will overwrite
 
@@ -107,7 +93,6 @@ The workflow automatically uses `FIMS_TEMPLATE_SYNC_TOKEN` when present, and fal
 |---|---|
 | `pkgdown/extra.css` | ✅ Yes |
 | `pkgdown/favicon/*` | ✅ Yes |
-| `pkgdown/assets/*` | ✅ Yes |
 | `pkgdown/FIMS_PKGDOWN_TEMPLATE_VERSION` | ✅ Yes |
 | `pkgdown/_pkgdown.yml` | ❌ Never |
 
@@ -118,7 +103,28 @@ To disable automatic sync in a downstream repo:
 - **Disable the workflow** via the GitHub Actions UI (`Actions → sync-fims-pkgdown-template → ⋯ → Disable workflow`), or
 - **Delete the workflow file** `.github/workflows/sync-fims-pkgdown-template.yml` from your repo.
 
-You can still use the template assets without the automatic sync workflow by simply keeping the files without the workflow.
+You can still use the template files without the automatic sync workflow by simply keeping the files without the workflow.
+
+## Create a gh-pages branch to deploy pkgdown site
+
+After you initialize the template repository or add the files to an existing repository you will need to copy and paste the following code into your terminal/git bash to create an empty gh-pages branch. This is the branch that your pkgdown site will push to when it updates.
+
+```
+# from your repo working directory
+git checkout --orphan gh-pages
+git rm -rf . 2>/dev/null || true
+
+# add something so the branch isn’t totally empty
+touch .nojekyll
+git add .nojekyll
+git commit -m "Initialize gh-pages branch"
+
+git push -u origin gh-pages
+```
+
+## Pkgdown build fails
+
+If your pkgdown build fails, please see the [ghactions4r page](https://nmfs-ost.github.io/ghactions4r/) for more details on adding ubuntu libraries and other additional arguments to the `.github/workflow/call-update-pkgdown.yml` file
 
 ## Template versioning
 
