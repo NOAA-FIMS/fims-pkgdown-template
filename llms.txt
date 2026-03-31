@@ -1,4 +1,4 @@
-# fims-pkgdown-template
+# FIMSPkgdownTemplate
 
 A GitHub Template Repository providing shared
 [pkgdown](https://pkgdown.r-lib.org/) theme files for NOAA-FIMS R
