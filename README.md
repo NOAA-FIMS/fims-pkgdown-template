@@ -107,7 +107,7 @@ You can still use the template files without the automatic sync workflow by simp
 
 ## Create a gh-pages branch to deploy pkgdown site
 
-After you initialize the template repository or add the files to an existing repository you will need to copy and paste the following code into your terminal/git bash to create an empty gh-pages branch. This is the branch that your pkgdown site will push to when it updates.
+After you initialize the template repository or add the files to an existing repository you will need to copy and paste the following code into your terminal/git bash to create an empty `gh-pages` branch. Github should automatically detect that a `gh-pages` branch was created and in Settings > Pages switch to publishing Pages from `gh-pages`.
 
 ```
 # from your repo working directory
@@ -121,6 +121,8 @@ git commit -m "Initialize gh-pages branch"
 
 git push -u origin gh-pages
 ```
+
+After doing this step, you will want to go to Actions > call-update-pkgdown (side nav) and then look for the `Run workflow` button towards the top right of the screen and click that to re-run your pkgdown site build and deploy.
 
 ## Pkgdown build fails
 
