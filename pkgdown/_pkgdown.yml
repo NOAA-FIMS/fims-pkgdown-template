@@ -6,12 +6,14 @@
 # The template-managed files that will be kept in sync are:
 #   pkgdown/extra.css
 #   pkgdown/favicon/**
-#   pkgdown/assets/**
 #   pkgdown/FIMS_PKGDOWN_TEMPLATE_VERSION
 #
 # DO NOT expect this example file to be synced by the template workflow.
 
-url: https://noaa-fims.github.io/<your-package-name>
+home:
+  title: FIMS Pkgdown Template
+
+url: https://noaa-fims.github.io/fims-pkgdown-template
 
 template:
   bootstrap: 5
@@ -22,25 +24,17 @@ template:
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
       <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
 
-home:
-  title: <Your Package Title>
-
 navbar:
   structure:
-    left:
-      - reference
-      - articles
-      - news
     right:
+      - website
       - github
       - search
   components:
+    website:
+      text: fims website
+      href: https://noaa-fims.github.io/
     github:
       icon: fa-brands fa-github fa-lg
-      href: https://github.com/NOAA-FIMS/<your-package-name>
-      aria-label: GitHub repository
-
-reference:
-- title: "All functions"
-  contents:
-  - everything()  # matches all exported functions; refine as needed
+      href: https://github.com/noaa-fims/fims-pkgdown-template
+      aria-label: GitHub repository for the fims pkgdown template

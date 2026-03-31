@@ -1,13 +1,12 @@
 name: Sync FIMS pkgdown template
 
 # This workflow runs in DOWNSTREAM repos created from fims-pkgdown-template.
-# It periodically pulls template-managed files (CSS, favicons, assets) from
+# It periodically pulls template-managed files (CSS, favicons) from
 # NOAA-FIMS/fims-pkgdown-template and opens a PR if anything has changed.
 #
 # Template-managed files (will be overwritten on sync):
 #   pkgdown/extra.css
 #   pkgdown/favicon/**
-#   pkgdown/assets/**
 #   pkgdown/FIMS_PKGDOWN_TEMPLATE_VERSION
 #
 # Files NEVER touched by this workflow (downstream owns these):
@@ -34,27 +33,24 @@ jobs:
       - name: Checkout downstream repo
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.FIMS_TEMPLATE_SYNC_TOKEN || secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Checkout fims-pkgdown-template into temp directory
         uses: actions/checkout@v4
         with:
           repository: NOAA-FIMS/fims-pkgdown-template
           path: .fims-pkgdown-template
-          token: ${{ secrets.FIMS_TEMPLATE_SYNC_TOKEN || secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Copy template-managed files
         run: |
-          mkdir -p pkgdown/favicon pkgdown/assets
+          mkdir -p pkgdown/favicon
 
           # extra.css
           cp .fims-pkgdown-template/pkgdown/extra.css pkgdown/extra.css
 
           # favicon directory (all files)
           cp -r .fims-pkgdown-template/pkgdown/favicon/. pkgdown/favicon/
-
-          # assets directory (all files)
-          cp -r .fims-pkgdown-template/pkgdown/assets/. pkgdown/assets/
 
           # version marker
           cp .fims-pkgdown-template/pkgdown/FIMS_PKGDOWN_TEMPLATE_VERSION \
@@ -83,17 +79,16 @@ jobs:
         if: steps.changes.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v7
         with:
-          token: ${{ secrets.FIMS_TEMPLATE_SYNC_TOKEN || secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           branch: chore/sync-fims-pkgdown-template-${{ steps.version.outputs.version }}
           commit-message: |
-            chore: sync pkgdown assets from fims-pkgdown-template ${{ steps.version.outputs.version }}
+            chore: sync pkgdown files from fims-pkgdown-template ${{ steps.version.outputs.version }}
 
             Updated template-managed files:
               - pkgdown/extra.css
               - pkgdown/favicon/
-              - pkgdown/assets/
               - pkgdown/FIMS_PKGDOWN_TEMPLATE_VERSION
-          title: "chore: sync pkgdown assets from fims-pkgdown-template ${{ steps.version.outputs.version }}"
+          title: "chore: sync pkgdown files from fims-pkgdown-template ${{ steps.version.outputs.version }}"
           body: |
             This PR was opened automatically by the `sync-fims-pkgdown-template` workflow.
 
@@ -102,7 +97,6 @@ jobs:
 
             - `pkgdown/extra.css`
             - `pkgdown/favicon/`
-            - `pkgdown/assets/`
             - `pkgdown/FIMS_PKGDOWN_TEMPLATE_VERSION`
 
             **Your `pkgdown/_pkgdown.yml` was not modified.**
