@@ -9,3 +9,9 @@ License: CC0 1.0 Universal
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
+
+Imports:
+    pkgdown
+Suggests:
+    rmarkdown,
+    knitr

@@ -124,7 +124,13 @@ git push -u origin gh-pages
 
 After doing this step, you will want to go to Actions > call-update-pkgdown (side nav) and then look for the `Run workflow` button towards the top right of the screen and click that to re-run your pkgdown site build and deploy.
 
-## Pkgdown build fails
+## FIMS Website admin
+
+If you have just created a new FIMS package, eventually there will be a PR in the [FIMS website repo] that you will need to review and add the following:
+- Appropriate tags
+- Hex logo (if available)
+
+## If pkgdown build fails
 
 If your pkgdown build fails, please see the [ghactions4r page](https://nmfs-ost.github.io/ghactions4r/) for more details on adding ubuntu libraries and other additional arguments to the `.github/workflow/call-update-pkgdown.yml` file
 
